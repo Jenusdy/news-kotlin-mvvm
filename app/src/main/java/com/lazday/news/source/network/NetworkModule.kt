@@ -1,6 +1,5 @@
 package com.lazday.news.source.network
 
-import com.google.gson.GsonBuilder
 import com.lazday.news.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -10,27 +9,22 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 val networkModule = module {
     single { provideOkHttpClient() }
-    single { provideRetrofit( get() ) }
+    single { provideRetrofit(get()) }
     single { provideNewsApi(get()) }
 }
 
 fun provideOkHttpClient() : OkHttpClient {
-    return  OkHttpClient.Builder()
+    return OkHttpClient.Builder()
         .addInterceptor(
             HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
-        )
-        .build()
+        ).build()
 }
 
-fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
+fun provideRetrofit(okHttpClient: OkHttpClient) : Retrofit {
     return Retrofit.Builder()
-        .baseUrl( BuildConfig.BASE_URL )
-        .client( okHttpClient )
-        .addConverterFactory (
-                GsonConverterFactory.create(
-                    GsonBuilder().serializeNulls().create()
-                )
-        )
+        .baseUrl(BuildConfig.BASE_URL)
+        .client(okHttpClient)
+        .addConverterFactory(GsonConverterFactory.create())
         .build()
 }
 
