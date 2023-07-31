@@ -2,6 +2,7 @@ package com.lazday.news.ui.home
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.lazday.news.databinding.CustomToolbarBinding
@@ -40,6 +41,16 @@ class HomeFragment : Fragment() {
 
         viewModel.category.observe(viewLifecycleOwner) {
             Timber.e(it)
+        }
+
+        viewModel.news.observe(viewLifecycleOwner) {
+            Timber.e(it.articles.toString())
+        }
+
+        viewModel.message.observe(viewLifecycleOwner) {
+            it?.let {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+            }
         }
 
     }
