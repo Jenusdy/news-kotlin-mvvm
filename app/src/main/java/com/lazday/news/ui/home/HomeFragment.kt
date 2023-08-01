@@ -7,8 +7,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.lazday.news.databinding.CustomToolbarBinding
 import com.lazday.news.databinding.FragmentHomeBinding
+import com.lazday.news.source.model.ArticleModel
 import com.lazday.news.source.model.CategoryModel
 import com.lazday.news.ui.news.CategoryAdapter
+import com.lazday.news.ui.news.NewsAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.dsl.module
 import timber.log.Timber
@@ -43,8 +45,13 @@ class HomeFragment : Fragment() {
             Timber.e(it)
         }
 
+        binding.listNews.adapter = newsAdapter
+
         viewModel.news.observe(viewLifecycleOwner) {
             Timber.e(it.articles.toString())
+            binding.imageAlert.visibility = if (it.articles.isEmpty()) View.VISIBLE else View.GONE
+            binding.textAlert.visibility = if (it.articles.isEmpty()) View.VISIBLE else View.GONE
+            newsAdapter.add(it.articles)
         }
 
         viewModel.message.observe(viewLifecycleOwner) {
@@ -53,6 +60,14 @@ class HomeFragment : Fragment() {
             }
         }
 
+    }
+
+    private val newsAdapter by lazy {
+        NewsAdapter(arrayListOf(), object : NewsAdapter.OnAdapterListener {
+            override fun onClick(article: ArticleModel) {
+                TODO("Not yet implemented")
+            }
+        })
     }
 
     private val categoryAdapter by lazy {
