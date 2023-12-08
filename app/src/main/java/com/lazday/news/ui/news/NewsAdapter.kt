@@ -12,7 +12,11 @@ class NewsAdapter(
     val listener: OnAdapterListener
 ): RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
 
-    class ViewHolder(val binding: AdapterNewsBinding): RecyclerView.ViewHolder(binding.root)
+    class ViewHolder(val binding: AdapterNewsBinding): RecyclerView.ViewHolder(binding.root){
+        fun bind(article: ArticleModel){
+            binding.article = article
+        }
+    }
 
     interface OnAdapterListener {
         fun onClick(article: ArticleModel)
@@ -28,8 +32,7 @@ class NewsAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val article = articles[position]
-        holder.binding.title.text = article.title
-        holder.binding.publishedAt.text = article.publishedAt
+        holder.bind(article)
         holder.itemView.setOnClickListener {
             listener.onClick(article)
         }
