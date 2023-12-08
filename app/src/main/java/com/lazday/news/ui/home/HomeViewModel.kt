@@ -26,7 +26,6 @@ class HomeViewModel(
     init {
         category.value = ""
         message.value = null
-        fetch()
     }
 
     fun fetch () {
@@ -34,7 +33,7 @@ class HomeViewModel(
         viewModelScope.launch {
             try {
                 val response = repository.fetch(
-                    "",
+                    category.value!!,
                     "",
                     1
                 )
