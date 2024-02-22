@@ -3,6 +3,7 @@ package com.lazday.news
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
 import com.lazday.news.source.network.networkModule
+import com.lazday.news.source.persistance.databaseModule
 import com.lazday.news.source.repository.repositoryModule
 import com.lazday.news.ui.bookmark.bookmarkModule
 import com.lazday.news.ui.bookmark.bookmarkViewModule
@@ -31,7 +32,8 @@ class NewsApplication: Application() {
                 homeViewModule,
                 homeModule,
                 bookmarkViewModule,
-                bookmarkModule
+                bookmarkModule,
+                databaseModule
             )
         }
     }

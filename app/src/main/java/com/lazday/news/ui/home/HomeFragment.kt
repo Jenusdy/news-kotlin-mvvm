@@ -1,5 +1,6 @@
 package com.lazday.news.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
@@ -9,6 +10,7 @@ import com.lazday.news.databinding.CustomToolbarBinding
 import com.lazday.news.databinding.FragmentHomeBinding
 import com.lazday.news.source.model.ArticleModel
 import com.lazday.news.source.model.CategoryModel
+import com.lazday.news.ui.detail.DetailActivity
 import com.lazday.news.ui.news.CategoryAdapter
 import com.lazday.news.ui.news.NewsAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -26,9 +28,9 @@ class HomeFragment : Fragment() {
     private val viewModel: HomeViewModel by viewModel()
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         bindingToolbar = binding.toolbar
@@ -66,7 +68,9 @@ class HomeFragment : Fragment() {
     private val newsAdapter by lazy {
         NewsAdapter(arrayListOf(), object : NewsAdapter.OnAdapterListener {
             override fun onClick(article: ArticleModel) {
-                TODO("Not yet implemented")
+                startActivity(Intent(requireActivity(), DetailActivity::class.java)
+                    .putExtra("intent_detail", article)
+                )
             }
         })
     }
