@@ -11,11 +11,18 @@ import com.lazday.news.R
 import com.lazday.news.databinding.ActivityDetailBinding
 import com.lazday.news.databinding.CustomToolbarBinding
 import com.lazday.news.source.model.ArticleModel
+import org.koin.dsl.module
+import org.koin.androidx.viewmodel.ext.android.viewModel
+
+val detailModule = module {
+    factory { DetailActivity() }
+}
 
 class DetailActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityDetailBinding.inflate(layoutInflater) }
     private lateinit var bindingToolbar: CustomToolbarBinding
+    private val viewModel: DetailViewModel by viewModel()
     private val detail by lazy {
         intent.getSerializableExtra("intent_detail") as ArticleModel
     }
@@ -32,6 +39,7 @@ class DetailActivity : AppCompatActivity() {
         }
 
         detail.let {
+            viewModel.find(it)
             val web = binding.webView
             web.loadUrl(
                 it.url!!
@@ -57,9 +65,13 @@ class DetailActivity : AppCompatActivity() {
         val menuBookmark = menu!!.findItem(R.id.action_bookmark)
 
         menuBookmark.setOnMenuItemClickListener {
-            Toast.makeText(applicationContext, "Add Bookmark", Toast.LENGTH_SHORT).show()
-            menuBookmark.setIcon(R.drawable.ic_check)
+            viewModel.bookmark(detail)
             true
+        }
+
+        viewModel.isBookmark.observe(this) {
+            if (it == 0) menuBookmark.setIcon(R.drawable.ic_add)
+            else menuBookmark.setIcon(R.drawable.ic_check)
         }
         return super.onCreateOptionsMenu(menu)
 

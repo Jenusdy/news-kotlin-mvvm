@@ -7,6 +7,8 @@ import com.lazday.news.source.persistance.databaseModule
 import com.lazday.news.source.repository.repositoryModule
 import com.lazday.news.ui.bookmark.bookmarkModule
 import com.lazday.news.ui.bookmark.bookmarkViewModule
+import com.lazday.news.ui.detail.detailModule
+import com.lazday.news.ui.detail.detailViewModel
 import com.lazday.news.ui.home.homeModule
 import com.lazday.news.ui.home.homeViewModule
 import org.koin.android.ext.koin.androidContext
@@ -33,7 +35,9 @@ class NewsApplication: Application() {
                 homeModule,
                 bookmarkViewModule,
                 bookmarkModule,
-                databaseModule
+                databaseModule,
+                detailViewModel,
+                detailModule
             )
         }
     }
