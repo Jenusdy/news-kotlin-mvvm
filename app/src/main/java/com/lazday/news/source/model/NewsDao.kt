@@ -11,7 +11,7 @@ import androidx.room.Query
 @Dao
 interface NewsDao {
     @Query("SELECT * FROM table_article")
-    fun findAll(): LiveData<ArticleModel>
+    fun findAll(): LiveData<List<ArticleModel>>
 
     @Query("SELECT COUNT(*) FROM table_article WHERE publishedAt=:publish")
     suspend fun find(publish: String): Int

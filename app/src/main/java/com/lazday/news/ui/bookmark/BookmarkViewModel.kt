@@ -13,4 +13,5 @@ class BookmarkViewModel(
 ): ViewModel() {
 
     val title = "Bookmark"
+    val articles = repository.db.findAll()
 }
