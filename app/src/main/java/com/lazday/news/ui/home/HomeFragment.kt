@@ -67,6 +67,7 @@ class HomeFragment : Fragment() {
 
         binding.listCategory.adapter = categoryAdapter
         viewModel.category.observe(viewLifecycleOwner) {
+            NewsAdapter.VIEW_TYPES = if (it!!.isEmpty()) 1 else 2
             firstLoad()
         }
 
