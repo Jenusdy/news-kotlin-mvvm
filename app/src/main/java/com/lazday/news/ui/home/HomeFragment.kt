@@ -4,8 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import com.lazday.news.R
 import com.lazday.news.databinding.CustomToolbarBinding
 import com.lazday.news.databinding.FragmentHomeBinding
 import com.lazday.news.source.model.ArticleModel
@@ -43,11 +45,28 @@ class HomeFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
         bindingToolbar.title = viewModel.title
-        binding.listCategory.adapter = categoryAdapter
+        bindingToolbar.container.inflateMenu(R.menu.menu_search)
+        val menu = binding.toolbar.container.menu
+        val search = menu.findItem(R.id.action_search)
+        val searchView = search.actionView as SearchView
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                firstLoad()
+                return true
+            }
 
+            override fun onQueryTextChange(newText: String?): Boolean {
+                newText?.let {
+                    viewModel.query = it
+                }
+                return true
+            }
+
+        })
+
+        binding.listCategory.adapter = categoryAdapter
         viewModel.category.observe(viewLifecycleOwner) {
-            Timber.e(it)
-            viewModel.fetch()
+            firstLoad()
         }
 
         binding.listNews.adapter = newsAdapter
@@ -65,11 +84,18 @@ class HomeFragment : Fragment() {
 
     }
 
+    private fun firstLoad() {
+        binding.scroll.scrollTo(0, 0)
+        viewModel.fetch()
+    }
+
+
     private val newsAdapter by lazy {
         NewsAdapter(arrayListOf(), object : NewsAdapter.OnAdapterListener {
             override fun onClick(article: ArticleModel) {
-                startActivity(Intent(requireActivity(), DetailActivity::class.java)
-                    .putExtra("intent_detail", article)
+                startActivity(
+                    Intent(requireActivity(), DetailActivity::class.java)
+                        .putExtra("intent_detail", article)
                 )
             }
         })
